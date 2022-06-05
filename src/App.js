@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import GridData from "./GridData";
+import axios from 'axios'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const App = () => {
+const [users,setUser] = useState([])
+
+const SetDeletedUser=(filteredArray)=>{
+  console.log(filteredArray)
+  setUser(filteredArray)
+  }
+  
+useEffect( ()=>{
+
+  const User=async()=>{
+  const response=await axios.get('https://jsonplaceholder.typicode.com/users'); 
+  if(response.status===200)
+  { 
+  setUser(response.data)
+  }
+  }
+    User()
+  },[]);
+
+
+
+  return(
+    <>
+    <GridData users={users} SetDeletedUser={SetDeletedUser}/>
+    </>
+  )
 }
 
 export default App;
